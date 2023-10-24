@@ -11,7 +11,7 @@ def run_client():
     request = greet_pb2.GreetRequest(name=name)
     response = stub.Greet(request)
 
-    print(f"Server response (Client 1) {name}: {response.mesage}")
+    print(f"Server response (Client 1) {name}: {response.message}")
 
 if __name__ == '__main__':
     run_client()
