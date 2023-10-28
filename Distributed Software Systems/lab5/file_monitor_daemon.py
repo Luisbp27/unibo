@@ -1,38 +1,23 @@
-import os
 import time
-import logging
+import os
 import daemon
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 
-# Set up logging
-logging.basicConfig(filename='/path/to/daemon.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+# Define the directory to monitor
+MONITOR_DIR = '/Users/luisbarcap/Downloads'
 
-# Define the directory to be monitored
-MONITORED_DIR = '/path/to/monitored/directory'
+def monitor_directory():
+    while True:
+        new_files = [f for f in os.listdir(MONITOR_DIR) if os.path.isfile(os.path.join(MONITOR_DIR, f))]
+        for file in new_files:
+            file_path = os.path.join(MONITOR_DIR, file)
+            # Get the creation time of the file
+            file_creation_time = os.path.getctime(file_path)
+            print(f"New file detected: {file} (created at {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(file_creation_time))})")
+        time.sleep(10)  # Sleep for 10 seconds before checking again
 
-# Define the event handler for file system events
-class FileHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        if event.is_directory:
-            return
-        file_name = event.src_path
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        logging.info(f'New file detected: {file_name} (created at {timestamp})')
+def run_daemon():
+    with daemon.DaemonContext():
+        monitor_directory()
 
-# Function to start the daemonized process
-def start_daemon():
-    event_handler = FileHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path=MONITORED_DIR, recursive=False)
-    observer.start()
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-
-# Daemon context to detach the process from the terminal
-with daemon.DaemonContext():
-    start_daemon()
+if __name__ == "__main__":
+    run_daemon()
