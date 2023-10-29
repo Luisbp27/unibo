@@ -1,0 +1,36 @@
+digraph DAPR_Microservices {
+    // Global styles
+    graph [bgcolor=transparent, fontname="Arial", fontsize=14, style="rounded"];
+    node [shape=box, style="rounded,filled", fillcolor="#E0E0E0", fontname="Arial", fontsize=12, margin=0.15];
+    edge [fontname="Arial", fontsize=11];
+
+    // Service nodes with styles
+    UserManagement [label="User Management", color="#1F77B4"];
+    ProductCatalog [label="Product Catalog", color="#FF7F0E"];
+    OrderProcessing [label="Order Processing", color="#2CA02C"];
+    PaymentService [label="Payment Service", color="#D62728"];
+
+    // Connections with labels
+    UserManagement -> ProductCatalog [label="Publishes: new-user"];
+    UserManagement -> ProductCatalog [label="Subscribes to: product-updated"];
+    UserManagement -> OrderProcessing [label="Publishes: order-created"];
+    ProductCatalog -> OrderProcessing [label="Publishes: product-updated"];
+    OrderProcessing -> PaymentService [label="Invokes: process-payment"];
+
+    // DAPR Runtime node with styles
+    DAPRRuntime [label="DAPR Runtime", shape=ellipse, width=1, color="#9467BD", fontcolor="#9467BD", fontsize=14];
+
+    // Grouping services under DAPR Runtime
+    subgraph cluster_0 {
+        style=filled;
+        color=transparent;
+        UserManagement ProductCatalog OrderProcessing PaymentService;
+        label = "Microservices";
+    }
+
+    // Connections from DAPR Runtime to services
+    DAPRRuntime -> UserManagement [color="#1F77B4"];
+    DAPRRuntime -> ProductCatalog [color="#FF7F0E"];
+    DAPRRuntime -> OrderProcessing [color="#2CA02C"];
+    DAPRRuntime -> PaymentService [color="#D62728"];
+}
