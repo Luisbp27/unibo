@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.input-section {
+    margin-bottom: 20px;
+}
+
+.input-section label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.input-section input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-section button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.input-section button:hover {
+    background-color: #45a049;
+}
+
+.weather-results {
+    text-align: left;
+}
+
+.weather-results h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.weather-results p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .input-section input[type="text"] {
+        width: 60%;
+    }
+
+    .input-section button {
+        width: 35%;
+    }
+}
