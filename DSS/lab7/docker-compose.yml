@@ -1,15 +1,15 @@
 version: '3'
 services:
-  user-service:
+  user_service:
     build:
-      context: ./path/to/user-service
+      context: ./user_service
     ports:
       - "8081:8081"
 
-  order-service:
+  order_service:
     build:
-      context: ./path/to/order-service
+      context: ./order_service
     ports:
       - "8082:8082"
     depends_on:
-      - user-service
+      - user_service

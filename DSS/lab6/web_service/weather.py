@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # Define a function to get weather data for a given location
 def get_weather(city_name):
-    # Make request to OpenWeatherMap API for current and forecast weather data
+    # Make request to Weather.com API for current and forecast weather data
     onecall_response = requests.get(f"{BASE_URL}forecast.json?key={API_KEY}&q={city_name}&days=1&aqi=no&alerts=no")
     weather_data = onecall_response.json()
 
