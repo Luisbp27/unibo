@@ -40,7 +40,7 @@ public class Program1 {
         boolean running = true;
         while (running) {
             System.out.println(
-                    "\n\n## Problem 1 ##\nChoose an option:\n1. Search a member by name\n2. List all members\n3. List members by city\n4. Delete a member\n5. Insert a member\n6. Exit");
+                    "\n\n## Program 1 ##\nChoose an option:\n1. Search a member by name\n2. List all members\n3. List members by city\n4. Delete a member\n5. Insert a member\n6. Exit");
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1: // Search
