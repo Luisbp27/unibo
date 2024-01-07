@@ -28,7 +28,7 @@ public class Program2 {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {
-            System.out.println("Choose an option:\n1. Search by key\n2. Search by hs\n3. Exit");
+            System.out.println("\n\n## Program 2 ##\nChoose an option:\n1. Search by key\n2. Search by hs\n3. Exit");
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume newline left-over
             switch (choice) {
