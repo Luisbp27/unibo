@@ -6,18 +6,37 @@ class DictionaryElement {
     char info;
     int hs;
 
+    /**
+     * Constructor for DictionaryElement
+     *
+     * @param key Key value
+     * @param info Info value
+     * @param hs hs value in range [0, K]
+     */
     public DictionaryElement(String key, char info, int hs) {
         this.key = key;
         this.info = info;
         this.hs = hs;
     }
 
+    /**
+     * Returns a string representation of the DictionaryElement
+     *
+     * @return String representation of the DictionaryElement
+     */
     @Override
     public String toString() {
         return "<" + key + ", " + info + ", " + hs + ">";
     }
 }
 
+/**
+ * This class implements a dictionary using a hash table.
+ * The hash table uses separate chaining to resolve collisions.
+ * The hash table is implemented as an array of linked lists.
+ * The hash table size is set to K, where K is the number of
+ * different hs values in the dictionary.
+ */
 public class Program2 {
     private static HashMap<Integer, List<DictionaryElement>> dictionary;
 
@@ -29,16 +48,18 @@ public class Program2 {
         boolean running = true;
         while (running) {
             System.out.println("\n\n## Program 2 ##\nChoose an option:\n1. Search by key\n2. Search by hs\n3. Exit");
+
+            // Get user choice
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline left-over
+            scanner.nextLine();
             switch (choice) {
-                case 1:
+                case 1: // Search by key
                     searchByKey(scanner);
                     break;
-                case 2:
+                case 2: // Search by hs
                     searchByHs(scanner);
                     break;
-                case 3:
+                case 3: // Exit
                     running = false;
                     break;
                 default:
@@ -48,10 +69,20 @@ public class Program2 {
         scanner.close();
     }
 
+    /**
+     * Loads the dictionary from the given file
+     *
+     * @param filename Name of the file to load
+     * @throws FileNotFoundException If the file is not found
+     */
     private static void loadDictionary(String filename) throws FileNotFoundException {
-        dictionary = new HashMap<>();
         try (Scanner fileScanner = new Scanner(new File(filename))) {
+            // Read M, K from file and initialize dictionary with K value
             int M = fileScanner.nextInt();
+            int K = fileScanner.nextInt();
+            dictionary = new HashMap<>(K);
+
+            // Read each line and add to dictionary
             for (int i = 0; i < M; i++) {
                 String key = fileScanner.next();
                 char info = fileScanner.next().charAt(0);
@@ -63,9 +94,17 @@ public class Program2 {
         }
     }
 
+    /**
+     * Searches the dictionary for the given key
+     *
+     * @param scanner Scanner to get user input
+     */
     private static void searchByKey(Scanner scanner) {
+        // Get key from user
         System.out.println("Enter key to search:");
         String key = scanner.nextLine();
+
+        // Search dictionary for key in each list
         for (List<DictionaryElement> elements : dictionary.values()) {
             for (DictionaryElement element : elements) {
                 if (element.key.equals(key)) {
@@ -74,9 +113,15 @@ public class Program2 {
                 }
             }
         }
+
         System.out.println("Element not found.");
     }
 
+    /**
+     * Searches the dictionary for the given hs value
+     *
+     * @param scanner Scanner to get user input
+     */
     private static void searchByHs(Scanner scanner) {
         System.out.println("Enter hs value to search:");
         int hs = scanner.nextInt();
