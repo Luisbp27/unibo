@@ -41,6 +41,7 @@ class BinarySearchTree {
 
     /**
      * Inserts a new node into the binary search tree
+     *
      * @param ciu CIU value
      * @param pr PR value
      */
@@ -50,20 +51,25 @@ class BinarySearchTree {
 
     /**
      * Recursive helper function for insert()
+     *
      * @param root Root node of the tree
      * @param ciu CIU value
      * @param pr PR value
      * @return Root node of the tree
      */
     private LibraryNode insertRec(LibraryNode root, String ciu, String pr) {
+
+        // If the tree is empty, return a new node
         if (root == null) {
             root = new LibraryNode(ciu, pr);
             return root;
         }
 
-        if (ciu.compareTo(root.ciu) < 0)
+        // Otherwise, recur down the tree
+        int comparison = ciu.compareTo(root.ciu);
+        if (comparison < 0)
             root.left = insertRec(root.left, ciu, pr);
-        else if (ciu.compareTo(root.ciu) > 0)
+        else if (comparison > 0)
             root.right = insertRec(root.right, ciu, pr);
 
         return root;
@@ -78,9 +84,12 @@ class BinarySearchTree {
 
     /**
      * Recursive helper function for inorder()
+     *
      * @param root Root node of the tree
      */
     private void inorderRec(LibraryNode root) {
+
+        // If the tree is empty, return
         if (root != null) {
             inorderRec(root.left);
             System.out.println(root.ciu + " " + root.pr);
@@ -90,6 +99,7 @@ class BinarySearchTree {
 
     /**
      * Searches for a node with the given CIU value
+     *
      * @param ciu CIU value
      * @return Node with the given CIU value, or null if not found
      */
@@ -99,14 +109,18 @@ class BinarySearchTree {
 
     /**
      * Recursive helper function for search()
+     *
      * @param root Root node of the tree
      * @param ciu CIU value
      * @return Node with the given CIU value, or null if not found
      */
     private LibraryNode searchRec(LibraryNode root, String ciu) {
+
+        // If the tree is empty or the root node is the node we're looking for, return the root node
         if (root == null || root.ciu.equals(ciu))
             return root;
 
+        // Otherwise, recur down the tree
         if (ciu.compareTo(root.ciu) < 0)
             return searchRec(root.left, ciu);
 
@@ -115,11 +129,14 @@ class BinarySearchTree {
 
     /**
      * Updates the PR value of a node with the given CIU value
+     *
      * @param ciu CIU value
      * @param newPr New PR value
      */
     public void update(String ciu, String newPr) {
         LibraryNode node = search(ciu);
+
+        // If the node is found, update the PR value
         if (node != null) {
             node.pr = newPr;
         } else {
@@ -146,14 +163,18 @@ public class Program1_1 {
             }
         }
 
+        // Scan for user input
         Scanner inputScanner = new Scanner(System.in);
         boolean running = true;
+
         while (running) {
             System.out.println("\n\n## Program 1.1 ## \nChoose an option:\n1. Search a member by CIU\n2. Change PR value on member by CIU\n3. List all members\n4. Exit");
+
+            // Handle the choice of the user
             int choice = inputScanner.nextInt();
-            inputScanner.nextLine(); // Consume newline
+            inputScanner.nextLine();
             switch (choice) {
-                case 1:
+                case 1: // Search
                     System.out.println("Enter CIU to search:");
                     String ciu = inputScanner.nextLine();
                     LibraryNode result = bst.search(ciu);
@@ -162,7 +183,7 @@ public class Program1_1 {
                     System.out.println(result != null ? "CIU: " + result.ciu + ", PR: " + result.pr : "CIU not found.");
 
                     break;
-                case 2:
+                case 2: // Update
                     System.out.println("Enter CIU to change PR:");
                     ciu = inputScanner.nextLine();
                     System.out.println("Enter new PR:");
@@ -171,13 +192,13 @@ public class Program1_1 {
                     bst.update(ciu, newPr);
 
                     break;
-                case 3:
+                case 3: // List all
                     bst.inorder();
 
                     break;
-                case 4:
+                case 4: // Exit
                     running = false;
-                    
+
                     break;
                 default:
                     System.out.println("Invalid choice.");

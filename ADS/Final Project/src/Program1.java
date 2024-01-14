@@ -12,6 +12,15 @@ class Library {
     String name, city, link, code;
     int year;
 
+    /**
+     * Constructor for Library
+     *
+     * @param name Name of the library
+     * @param city City of the library
+     * @param year Year of the library
+     * @param link Link of the library
+     * @param code Code of the library
+     */
     public Library(String name, String city, int year, String link, String code) {
         this.name = name;
         this.city = city;
@@ -20,12 +29,22 @@ class Library {
         this.code = code;
     }
 
+    /**
+     * This method returns a string representation of the library.
+     *
+     * @return String representation of the library
+     */
     @Override
     public String toString() {
         return name + " " + city + " " + year + " " + link + " " + code;
     }
 }
 
+/**
+ * This class represents a node in the binary search tree. Each node contains a
+ * CIU and PR value, and pointers to the left and right child nodes. The CIU is
+ * used as the key for the binary search tree.
+ */
 public class Program1 {
 
     public static final int ALPHABET_SIZE = 26;
