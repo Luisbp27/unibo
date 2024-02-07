@@ -52,7 +52,7 @@ public class Program1 {
     private static List<Library>[] libraries = new List[ALPHABET_SIZE];
 
     public static void main(String[] args) {
-        // Initialize the array of lists
+        // Initialize the ArrayList of libraries, one for each letter of the alphabet
         for (int i = 0; i < ALPHABET_SIZE; i++) {
             libraries[i] = new ArrayList<>();
         }
@@ -172,7 +172,7 @@ public class Program1 {
      * @param filename The name of the file to load the libraries from
      */
     private static void loadLibraries(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename + ".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
                 // Split the read line into tokens to get the details of the library

@@ -13,6 +13,7 @@ class LibraryNode {
 
     /**
      * Constructor for LibraryNode
+     *
      * @param ciu CIU value
      * @param pr PR value
      */
@@ -34,6 +35,7 @@ class BinarySearchTree {
     /**
      * Constructor for BinarySearchTree
      * Initializes root node to null
+     *
      */
     public BinarySearchTree() {
         root = null;
@@ -77,6 +79,7 @@ class BinarySearchTree {
 
     /**
      * Prints the contents of the binary search tree in order
+     *
      */
     public void inorder() {
         inorderRec(root);
@@ -175,8 +178,11 @@ public class Program1_1 {
             inputScanner.nextLine();
             switch (choice) {
                 case 1: // Search
+                    // Take CIU input from user
                     System.out.println("Enter CIU to search:");
                     String ciu = inputScanner.nextLine();
+
+                    // Search for the CIU in the BST
                     LibraryNode result = bst.search(ciu);
 
                     // Print result if found, otherwise print error message
@@ -184,15 +190,18 @@ public class Program1_1 {
 
                     break;
                 case 2: // Update
+                    // Take CIU and new PR input from user
                     System.out.println("Enter CIU to change PR:");
                     ciu = inputScanner.nextLine();
                     System.out.println("Enter new PR:");
                     String newPr = inputScanner.nextLine();
 
+                    // Update PR value
                     bst.update(ciu, newPr);
 
                     break;
                 case 3: // List all
+                    // Print all nodes in the BST
                     bst.inorder();
 
                     break;

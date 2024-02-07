@@ -1,6 +1,13 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class represents an element in the dictionary.
+ * It contains a key, info, and hs value.
+ * The hs value is used to determine which list in the hash table the element is stored in.
+ * The key is used to search for elements in the dictionary.
+ * The info value is used to store additional information about the element.
+ */
 class DictionaryElement {
     String key;
     char info;
@@ -107,6 +114,7 @@ public class Program2 {
         // Search dictionary for key in each list
         for (List<DictionaryElement> elements : dictionary.values()) {
             for (DictionaryElement element : elements) {
+                // If key is found, print element and return
                 if (element.key.equals(key)) {
                     System.out.println("Element found: " + element);
                     return;
@@ -123,11 +131,17 @@ public class Program2 {
      * @param scanner Scanner to get user input
      */
     private static void searchByHs(Scanner scanner) {
+        // Get hs value from user
         System.out.println("Enter hs value to search:");
         int hs = scanner.nextInt();
+
+        // Search dictionary for elements with the given hs value
         if (dictionary.containsKey(hs)) {
+            // Get elements with the given hs value
             List<DictionaryElement> elements = dictionary.get(hs);
             System.out.println("Elements with hs " + hs + ":");
+
+            // Print each element
             for (DictionaryElement element : elements) {
                 System.out.println(element);
             }
