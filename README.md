@@ -1,2 +1,3 @@
 # UNIBO
-All my projects during my Erasmus period at the University of Bologna
+
+Some of my work during my Erasmus period at the University of Bologna. "Big" projects are in separate repositories.
