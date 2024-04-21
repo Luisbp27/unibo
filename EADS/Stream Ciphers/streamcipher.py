@@ -31,8 +31,9 @@ class LFSR:
             state: Initial state of the LFSR. Default is None.
         """
 
-        self.poly = poly
         self.length = len(poly)
+        # Convert the polynomial to a list of bits
+        self.poly = [1 if i in poly else 0 for i in range(self.length + 1)][::-1]
         self.state = state
 
         # If no state is provided, initialize all bits to 1
@@ -49,15 +50,30 @@ class LFSR:
         self.feedback = functools.reduce(xor, [a & b for a, b in zip(self.poly[1:], self.state)])
 
     def __len__(self):
-        """ Returns the length of the LFSR """
+        """ Returns the length of the LFSR
+
+        Returns:
+            length: Length of the LFSR
+        """
+
         return self.length
 
     def __iter__(self):
-        """ Iterator """
+        """ Iterator
+
+        Returns:
+            self: LFSR
+        """
+
         return self
 
     def __next__(self):
-        """ Update LFSR state and returns output bit """
+        """ Returns the next output bit of the LFSR
+
+        Returns:
+            output: Output bit of the LFSR
+        """
+
         # Insert the feedback bit at the beginning of the state
         self.state.insert(0, self.feedback)
         # Remove the last bit of the state
@@ -72,21 +88,40 @@ class LFSR:
         return self.output
 
     def run_steps(self, n=1):
-        """ Execute N LFSR steps and returns the corresponding output list of bool """
-        list_of_bool = [next(self) for _ in range(n)]
-        return list_of_bool
+        """ Execute N LFSR steps and returns the corresponding output list of bool
+
+        Args:
+            n: Number of steps to perform. Default is 1.
+
+        Returns:
+            list_of_bool: List of boolean values representing the output of the LFSR
+        """
+
+        return [next(self) for _ in range(n)]
 
     def cycle(self, state=None):
-        """ Returns a list of boolean values representing the full LFSR cycle """
+        """ Returns a list of boolean values representing the full LFSR cycle
+
+        Args:
+            state: Initial state of the LFSR. Default is None.
+
+        Returns:
+            list_of_bool: List of boolean values representing the full LFSR cycle
+        """
+
         if state is not None:
             self.state = state
 
         # The number of steps to perform is 2^L - 1, where L is the length of the LFSR
-        list_of_bool = [next(self) for _ in range(2**self.length - 1)]
-        return list_of_bool
+        return [next(self) for _ in range(2**self.length - 1)]
 
     def __str__(self):
-        """ Returns a string representation of the LFSR """
+        """ Returns a string representation of the LFSR
+
+        Returns:
+            str: String representation of the LFSR
+        """
+        
         return f'{self.state} {self.output} {self.feedback}'
 
 
@@ -217,15 +252,34 @@ class SelfShrinkingGenerator:
     """
 
     def __init__(self, poly=None, selection_bit=None, state=None):
+        """ Constructor
+
+        Args:
+            poly: Polynomial of the LFSR. Default is None.
+            selection_bit: Selection bit. Default is None.
+            state: Initial state of the LFSR. Default is None.
+        """
+
         self.lfsr = LFSR(poly, state)
         self.sbit = selection_bit
         self.output = None
 
     def __iter__(self):
+        """ Iterator
+
+        Returns:
+            self: Self-Shrinking Generator
+        """
+
         return self
 
     def __next__(self):
-        """ Returns the next output bit of the Self-Shrinking Generator """
+        """ Returns the next output bit of the Self-Shrinking Generator
+
+        Returns:
+            output: Output bit of the Self-Shrinking Generator
+        """
+
         s = next(self.lfsr)
         self.output = s & self.sbit
         return self.output
