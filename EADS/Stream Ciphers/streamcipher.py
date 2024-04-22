@@ -31,7 +31,7 @@ class LFSR:
             state: Initial state of the LFSR. Default is None.
         """
 
-        self.length = len(poly)
+        self.length = max(poly)
         # Convert the polynomial to a list of bits
         self.poly = [1 if i in poly else 0 for i in range(self.length + 1)][::-1]
         self.state = state
