@@ -121,7 +121,7 @@ class LFSR:
         Returns:
             str: String representation of the LFSR
         """
-        
+
         return f'{self.state} {self.output} {self.feedback}'
 
 
@@ -251,7 +251,7 @@ class SelfShrinkingGenerator:
     - __next__: Returns the next output bit of the Self-Shrinking Generator
     """
 
-    def __init__(self, poly=None, selection_bit=None, state=None):
+    def __init__(self, poly=None, selection_bit=3, state=None):
         """ Constructor
 
         Args:
