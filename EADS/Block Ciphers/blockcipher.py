@@ -1,10 +1,23 @@
-from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy as np
+
+## PART 1: AES
+
+def display_cipher_image(cipher_data, shape):
+    """ Display the image of the cipher data
+
+    Args:
+        cipher_data: the cipher data to display
+        shape: the shape of the image
+    """
+
+    cipher_image = np.frombuffer(cipher_data, dtype=np.uint8).reshape(shape)
+    plt.imshow(cipher_image, cmap='gray')
+    plt.show()
 
 ## PART 2: MONTE CARLO SIMULATION
 
@@ -38,7 +51,7 @@ def plot_histogram(hamming_distances, average, axs, color, title):
     Returns:
         axs: the axis with the histogram plotted
     """
-    
+
     axs.hist(hamming_distances, bins=20, color=color, edgecolor='black')
     axs.set_xlabel('Hamming Distance')
     axs.set_ylabel('Frequency')
@@ -167,7 +180,7 @@ def modify_key(key):
     modified_keys = []
     for i in range(len(key) * 8): # Create as many modified keys as there are bits in the key
         mod_key = bytearray(key)
-        byte_index, bit_index = divmod(i, 8)
+        byte_index, bit_index = divmod(i, 8) # Calculate byte index and bit position
         mod_key[byte_index] ^= (1 << bit_index)
         modified_keys.append(bytes(mod_key))
     return modified_keys
