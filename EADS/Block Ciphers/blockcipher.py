@@ -26,6 +26,19 @@ def monte_carlo_pi(n):
 ## PART 3: DIFFUSION AND CONFUSION
 
 def plot_histogram(hamming_distances, average, axs, color, title):
+    """ Plot a histogram of the Hamming distances between the original ciphertext and the modified ciphertexts
+
+    Args:
+        hamming_distances: a list of Hamming distances between the original ciphertext and the modified ciphertexts
+        average: the average Hamming distance between the original ciphertext and the modified ciphertexts
+        axs: the axis to plot the histogram on
+        color: the color of the histogram bars
+        title: the title of the histogram
+
+    Returns:
+        axs: the axis with the histogram plotted
+    """
+    
     axs.hist(hamming_distances, bins=20, color=color, edgecolor='black')
     axs.set_xlabel('Hamming Distance')
     axs.set_ylabel('Frequency')
