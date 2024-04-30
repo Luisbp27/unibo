@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyi
+*.pycachefile
+
+# Virtual environments
+venv/
+env/
+.venv/
+.venv3/
+env.bak/
+env/
