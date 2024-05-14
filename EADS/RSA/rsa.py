@@ -1,12 +1,14 @@
 import random
 from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+
+## TASK 1
 
 class RSA:
     """ RSA class to encrypt and decrypt messages using the RSA algorithm
     """
 
-    def __init__(self, length = None, p = None, q = None):
+    def __init__(self, length=None, p=None, q=None):
         """ Initialize the RSA object
 
         Args:
@@ -14,9 +16,21 @@ class RSA:
             q: second prime number
         """
 
+        # If length is not provided, set it to 1024 bits
+        if length is None:
+            length = 1024
+
         self.length = length
+
+        # If p or q are not provided, generate them
+        if p is None or q is None:
+            p = self.generate_prime()
+            q = self.generate_prime()
+
         self.p = p
         self.q = q
+
+        # Calculate the other parameters
         self.n = p * q
         self.phi = (p - 1) * (q - 1)
         self.key_pub = self.find_e()
@@ -30,7 +44,8 @@ class RSA:
         """
 
         for i in range(2, self.phi):
-            if self.is_coprime(i, self.phi):
+            gcd, _, _ = extended_euclidean_algorithm(i, self.phi)
+            if gcd == 1:
                 return i
 
     def find_d(self):
@@ -40,24 +55,21 @@ class RSA:
             d: the private key
         """
 
-        for i in range(2, self.phi):
-            if (self.key_pub * i) % self.phi == 1:
-                return i
+        _, x, _ = extended_euclidean_algorithm(self.key_pub, self.phi)
+        return x % self.phi
 
-    def is_coprime(self, a, b):
-        """ Check if two numbers are coprime
-
-        Args:
-            a: first number
-            b: second number
+    def generate_prime(self):
+        """ Generate a prime number using CSPRNG for more security and Miller-Rabin primality test
 
         Returns:
-            coprime: True if a and b are coprime, False otherwise
+            p: the prime number
         """
 
-        while b:
-            a, b = b, a % b
-        return a == 1
+        while True:
+            # Generate a random number of length bits
+            p = int.from_bytes(get_random_bytes(self.length // 8), byteorder='big')
+            if miller_rabin(p, 50):
+                return p
 
     def encrypt(self, plaintext):
         """ Encrypt the message using the public key
@@ -69,8 +81,7 @@ class RSA:
             ciphertext: the encrypted message
         """
 
-        # pow(x, y, z) calculates x^y % z
-        return square_multiply(plaintext, self.key_pub, self.n)
+        return square_multiply(int.from_bytes(plaintext, byteorder='big'), self.key_pub, self.n)
 
     def decrypt(self, ciphertext):
         """ Decrypt the message using the private key
@@ -82,8 +93,13 @@ class RSA:
             plaintext: the decrypted message
         """
 
-        # pow(x, y, z) calculates x^y % z
-        return square_multiply(ciphertext, self.key_priv, self.n)
+        plaintext = square_multiply(ciphertext, self.key_priv, self.n)
+
+        # Calculate the number of bytes needed to represent the plaintext
+        # We add 7 to round up to the nearest byte
+        plaintext_bytes = (plaintext.bit_length() + 7) // 8
+
+        return plaintext.to_bytes(plaintext_bytes, byteorder='big')
 
 def extended_euclidean_algorithm(a, m):
     """ Extended Euclidean Algorithm to find the inverse of a mod m
@@ -92,13 +108,10 @@ def extended_euclidean_algorithm(a, m):
         a: first number
         m: second number
 
-    Raises:
-        ValueError: Numbers are not coprime, they have not an inverse
-
     Returns:
         r0: gcd(a, m)
-        s0:
-        t0:
+        s0: quotient of the division of a by m
+        t0: quotient of the division of m by a
     """
 
     r0, r1 = m, a
@@ -178,3 +191,54 @@ def miller_rabin(p, N):
             return False
 
     return True
+
+## TASK 2
+
+def aes_encrypt(key, plaintext):
+    """ Encrypt the message using the AES algorithm in ECB mode with manual padding
+
+    Args:
+        key: the key to encrypt the message
+        plaintext: the message to encrypt
+
+    Returns:
+        ciphertext: the encrypted message
+    """
+
+    cipher = AES.new(key, AES.MODE_ECB)
+    block_size = AES.block_size
+    ciphertext = b''
+
+    # Encrypt each block individually
+    for i in range(0, len(plaintext), block_size):
+        block = plaintext[i:i+block_size]
+        if len(block) == block_size:
+            ciphertext += cipher.encrypt(block)
+        else:
+            block += b'\x00' * (block_size - len(block)) # Add padding
+            ciphertext += cipher.encrypt(block)
+
+    return ciphertext
+
+def aes_decrypt(key, ciphertext):
+    """ Decrypt the message using the AES algorithm in ECB mode with manual padding
+
+    Args:
+        key: the key to decrypt the message
+        ciphertext: the message to decrypt
+
+    Returns:
+        plaintext: the decrypted message
+    """
+
+    cipher = AES.new(key, AES.MODE_ECB)
+    block_size = AES.block_size
+    plaintext = b''
+
+    # Decrypt each block individually
+    for i in range(0, len(ciphertext), block_size):
+        block = ciphertext[i:i+block_size]
+        decrypted_block = cipher.decrypt(block)
+        plaintext += decrypted_block.rstrip(b'\x00') # Remove padding
+
+    return plaintext
